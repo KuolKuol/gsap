@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+</head>
+<body>
+
+    <style>
+        .container {
+            background-color:black;
+            width: 500px;
+            height: 500px;
+        }
+
+        .box {
+            background-color: red;
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+
+    <div class="container">
+        <div class="box"></div>
+    </div>
+
+    <button class="delay">Delay</button>
+    <button class="pause">pause</button>
+    <button class="play">play</button>
+    <button class="reverse">reverse</button>
+    <button class="duration">duration</button>
+    <button class="endTime">end time</button>
+    <button class="eventCallback">event callback</button>
+    <br>
+    <button class="invalidate">invalidate</button>
+    <button class="isActive">is active</button>
+    <button class="iteration">iteration</button>
+    <button class="kill">kill</button>
+    
+    <script>
+        
+        let delay = document.querySelector('.delay');
+        let pause = document.querySelector('.pause');
+        let play = document.querySelector('.play');
+        let reverse = document.querySelector('.reverse');
+        let duration = document.querySelector('.duration');
+        let endTime = document.querySelector('.endTime');
+        let eventCallback = document.querySelector('.eventCallback');
+        let invalidate = document.querySelector('.invalidate');
+        let isActive = document.querySelector('.isActive');
+        let iteration = document.querySelector('.iteration');
+        let kill = document.querySelector('.kill');
+
+
+        let tween1 = gsap.fromTo('.box',
+        {
+            x:500,
+            y:500
+        },
+        {
+            duration:5,
+            x:0,
+            y:0,
+            repeat:4,
+            paused:true
+        });
+        console.log(tween1);
+        // Sets the animation's initial delay (in seconds)
+        tween1.delay(2);
+
+
+        delay.addEventListener('click',()=>{
+            // Returns the animation's initial delay (in seconds)
+            //This method serves as both a getter and setter. Omitting the parameter returns the current value (getter), whereas defining the parameter sets the value (setter) and returns the instance itself for easier chaining, like myAnimation.delay(2).timeScale(0.5).play(1);
+            console.log(tween1.delay());
+        })
+
+        duration.addEventListener('click',()=>{
+            // Gets or sets the animation's duration, not including any repeats or repeatDelays.
+            // This method serves as both a getter and setter. Omitting the parameter returns the current value (getter), whereas defining the parameter sets the value (setter) and returns the instance itself for easier chaining, like myAnimation.duration(2).delay(0.5).play(1);
+            console.log(tween1.duration());
+        })
+
+        endTime.addEventListener('click',()=>{
+            // Returns the time at which the animation will finish according to the parent timeline's local time.
+            console.log(tween1.endTime());
+        })
+
+        eventCallback.addEventListener('click',()=>{
+            
+            let sayHi = (param1) => {
+                console.log(param1)
+            }
+            // Gets or sets an event callback like "onComplete", "onUpdate", "onStart", "onReverseComplete" or "onRepeat" along with any parameters that should be passed to that callback.
+            // This method serves as both a getter and setter. Omitting all but the first parameter returns the current value (getter), whereas defining more than the first parameter sets the value (setter) and returns the instance itself for easier chaining, like.
+            // Delete callback by setting second parameter to null
+            tween1.eventCallback("onComplete",sayHi,["SAY HI"]);
+
+        })
+
+        invalidate.addEventListener('click',()=>{
+        let tween1 = gsap.to('.box',
+        {
+            duration:5,
+            x:"+=100",
+            y:0
+        });
+
+        // [override] Flushes any internally-recorded starting/ending values which can be useful if you want to restart an animation without reverting to any previously recorded starting values.
+        tween1.invalidate();
+        tween1.restart();
+        })
+
+        
+        isActive.addEventListener('click',()=>{
+            // Indicates whether or not the animation is currently active (meaning the virtual playhead is actively moving across this instance's time span and it is not paused, nor are any of its ancestor timelines).
+            console.log(tween1.isActive());
+        })
+                
+        iteration.addEventListener('click',()=>{
+            // gets current iteration
+            console.log(tween1.iteration());
+            // sets iteration the second iteration
+            tween1.iteration(2)
+        })
+
+        kill.addEventListener('click',()=>{
+            //kill the entire animation:
+            tween1.kill();
+        })
+
+        pause.addEventListener('click',()=>{
+            tween1.pause();
+        })
+
+        play.addEventListener('click',()=>{
+            tween1.play();
+        })
+
+        reverse.addEventListener('click',()=>{
+            tween1.reverse();
+        })
+
+
+
+
+    </script>
+</body>
+</html>
